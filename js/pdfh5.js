@@ -815,6 +815,7 @@
 			}, 0)
 			options = options ? options : {};
 			options.pdfurl = options.pdfurl ? options.pdfurl : null;
+			options.pdfData = options.pdfData? options.pdfData: null;
 			options.data = options.data ? options.data : null;
 			if (options.scrollEnable == 'undefined' || options.scrollEnable == undefined) {
 				options.scrollEnable = true
@@ -939,11 +940,9 @@
 				if (r != null) return decodeURIComponent(r[2]);
 				return "";
 			}
-			var pdfurl = GetQueryString("file");
-			if (pdfurl) {
-				getDoc(pdfurl)
-			} else if (options.pdfurl) {
-				getDoc(options.pdfurl)
+			
+			if (options.pdfData) {
+				getDoc(options.pdfData)
 			} else {
 				setTimeout(function() {
 					var time = new Date().getTime();
@@ -955,11 +954,11 @@
 				}, 0)
 			}
 
-			function getDoc(array) {
+			function getDoc(data) {
 				if (self.pdfLoaded) {
 					return;
 				}
-				pdfjsLib.getDocument(array).then(function(pdf) {
+				pdfjsLib.getDocument({data: data}).then(function(pdf) {
 					if (self.pdfLoaded) {
 						return;
 					}
